@@ -1,5 +1,7 @@
 import random
 import math
+width = 10
+height = 10
 
 class Cell:
 	def __init__(self, x, y, v, angle, r, interaction, m, limit):
@@ -56,15 +58,15 @@ class Cell:
 		return math.sqrt((other.x-self.x)*(other.x-self.x)+(other.y-self.y)*(other.y-self.y))
 
 	def correct_coords(self):
-		if self.x > 500:
-			self.x = -500
-		if self.x < -500:
-			self.x = 500
+		if self.x > width/2:
+			self.x = -width/2
+		if self.x < -width/2:
+			self.x = width/2
 		 #*random.uniform(-1,1)
-		if self.y > 500:
-			self.y = -500
-		if self.y < -500:
-			self.y = 500
+		if self.y > width/2:
+			self.y = -width/2
+		if self.y < -width/2:
+			self.y = width/2
 
 	def get_mass(self):
 		if self.interaction<0:
