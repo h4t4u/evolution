@@ -17,6 +17,7 @@ class Cell:
 		self.limit = limit
 		self.feel_carni = feel_carni
 		self.feel_pred = feel_pred
+		self.sr=0
 
 	def create(self, part):
 		angle = random.randint(0,360)
@@ -27,6 +28,7 @@ class Cell:
 
 	def step(self, dt):
 		#+(self.v_x*self.v_x+self.v_y*self.v_y)/70000
+		self.sr = 0
 		if self.m <=1:
 			return -1
 		self.angle += random.uniform(-3,3)
@@ -45,6 +47,7 @@ class Cell:
 
 	def interact(self, other):
 		r = self.radius(other)
+		self.sr += r
 		if r < (self.r + other.r):
 			if self.interaction > 0 and other.m>0:
 				other.m -= self.interaction*5
@@ -54,7 +57,14 @@ class Cell:
 				#print("inter ", self.m)
 		#if self.radius(other) < (-self.r + other.r) and self.interaction < 0:	
 		#	self.m = 0	
-		mult = self.v*math.cos(self.angle*3.14/180)*(other.y-self.y)-self.v*math.sin(self.angle*3.14/180)*(other.x-self.x)
+		dx = other.x-self.x
+		if abs(dx) > width-abs(dx):
+			dx = dx-width
+
+		dy = other.y-self.y
+		if abs(dy)>height-abs(dy):
+			dy = dy-height
+		mult = self.v*math.cos(self.angle*3.14/180)*(dy)-self.v*math.sin(self.angle*3.14/180)*(dx)
 		if other.interaction < 0:
 			if mult < 0:
 				self.angle-=200*self.feel_carni/((r+1)*(r+1))
@@ -72,7 +82,14 @@ class Cell:
 			
 
 	def radius(self, other):
-		return math.sqrt((other.x-self.x)*(other.x-self.x)+(other.y-self.y)*(other.y-self.y))
+		dx = abs(other.x-self.x)
+		if dx > width-dx:
+			dx = width-dx
+
+		dy = abs(other.y-self.y)
+		if dy>height-dy:
+			dy = height-dy
+		return math.sqrt((dx)*(dx)+(dy)*(dy))
 
 	def correct_coords(self):
 		if self.x > width/2:
@@ -90,4 +107,4 @@ class Cell:
 			self.m+=0.5*self.r+3
 
 	def lose_mass(self):
-		self.m -= 0.8*(0.02*self.r+1 + self.v*self.v*0.001)
+		self.m -= 0.5*(0.015*self.r+1 + abs(self.v*0.08))

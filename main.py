@@ -4,19 +4,19 @@ import sys
 
 pygame.init()
 
-width = 1000
+width = 600
 cell.width = width
-height =1000
+height =600
 cell.height = height
-scale = 1
+scale = 1.6
 dT = 20
-sc = pygame.display.set_mode((int(width*scale), int(height)))
+sc = pygame.display.set_mode((int(width*scale), int(height*scale)))
 RED = (225, 0, 0)
 GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
 GRAY = (127, 127, 127, 127)
 
-cells = [cell.Cell(0, 0, 100, 20, 20, 0, 0, 0, 600, 200)]
+cells = [cell.Cell(0, 10, 60, 20, 20, 0, 0, 0, 1200, 300)]
 
 while 1:
 	sc.fill(WHITE)
