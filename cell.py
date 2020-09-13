@@ -4,7 +4,7 @@ width = 10
 height = 10
 
 class Cell:
-	def __init__(self, x, y, v, angle, r, interaction, m, limit):
+	def __init__(self, x, y, v, angle, r, interaction, feel_carni, feel_pred, m, limit):
 		self.x = x
 		self.y = y
 		self.v = v
@@ -15,12 +15,15 @@ class Cell:
 		self.interaction = interaction
 		self.m = m
 		self.limit = limit
+		self.feel_carni = feel_carni
+		self.feel_pred = feel_pred
 
 	def create(self, part):
 		angle = random.randint(0,360)
 		r = int(abs(self.r+random.gauss(0,2)))
 		return Cell(int(self.x+(self.r+r)*1.5*math.cos(angle*3.14/180)), int(self.y+(self.r+r)*1.5*math.sin(angle*3.14/180)), self.v+random.gauss(0,5),
-					 self.angle+random.gauss(0,5), r, self.interaction+random.gauss(0,10), int(self.m*part), self.limit+random.gauss(0,10))
+					self.angle+random.gauss(0,5), r, self.interaction+random.gauss(0,10),
+					self.feel_carni+random.gauss(0,10), self.feel_pred+random.gauss(0,5), int(self.m*part), self.limit+random.gauss(0,10))
 
 	def step(self, dt):
 		#+(self.v_x*self.v_x+self.v_y*self.v_y)/70000
@@ -41,7 +44,8 @@ class Cell:
 			return child
 
 	def interact(self, other):
-		if self.radius(other) < (self.r + other.r):
+		r = self.radius(other)
+		if r < (self.r + other.r):
 			if self.interaction > 0 and other.m>0:
 				other.m -= self.interaction*5
 				self.m += self.interaction*5
@@ -50,8 +54,21 @@ class Cell:
 				#print("inter ", self.m)
 		#if self.radius(other) < (-self.r + other.r) and self.interaction < 0:	
 		#	self.m = 0	
+		mult = self.v*math.cos(self.angle*3.14/180)*(other.y-self.y)-self.v*math.sin(self.angle*3.14/180)*(other.x-self.x)
+		if other.interaction < 0:
+			if mult < 0:
+				self.angle-=200*self.feel_carni/((r+1)*(r+1))
+			else:
+				self.angle+=200*self.feel_carni/((r+1)*(r+1))
+
+		if other.interaction > 0:
+			if mult < 0:
+				self.angle-=200*self.feel_pred/((r+1)*(r+1))
+			else:
+				self.angle+=200*self.feel_pred/((r+1)*(r+1))
+
 		if self.interaction < 0:	
-			self.m -= 0.3*self.r * other.r/(2*self.radius(other)+1)
+			self.m -= 0.3*self.r * other.r/(2*r+1)
 			
 
 	def radius(self, other):
