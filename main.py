@@ -4,11 +4,11 @@ import sys
 
 pygame.init()
 
-width = 600
+width = 2000
 cell.width = width
-height =600
+height =2000
 cell.height = height
-scale = 1.6
+scale = 0.5
 dT = 20
 sc = pygame.display.set_mode((int(width*scale), int(height*scale)))
 RED = (225, 0, 0)
@@ -16,7 +16,7 @@ GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
 GRAY = (127, 127, 127, 127)
 
-cells = [cell.Cell(0, 10, 60, 20, 20, 0, 0, 0, 1200, 300)]
+cells = [cell.Cell(0, 10, 60, 20, 40, 0, 0, 0, 1200, 200)]
 
 while 1:
 	sc.fill(WHITE)
@@ -56,7 +56,7 @@ while 1:
 			COLOUR = RED
 		pygame.draw.circle(sc, COLOUR, (int((cell.x+int(width/2))*scale), int((cell.y+int(height/2))*scale)), int(cell.r*scale))
 		pygame.draw.line(sc, GRAY,	[int((cell.x+int(width/2)-int(cell.m/2))*scale), int((cell.y+int(height/2))*scale)],
-									[int((cell.x+int(width/2)+int(cell.m/2))*scale), int((cell.y+int(height/2))*scale)], 4 )
+									[int((cell.x+int(width/2)+int(cell.m/2))*scale), int((cell.y+int(height/2))*scale)], 2 )
 	if n_c == 0:
 		n_c = 1
 	if n_p == 0:

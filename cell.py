@@ -50,13 +50,12 @@ class Cell:
 		self.sr += r
 		if r < (self.r + other.r):
 			if self.interaction > 0 and other.m>0:
-				other.m -= self.interaction*5
-				self.m += self.interaction*5
-				if other.m<0:
+				if other.m<self.interaction*5:
+					self.m += other.m
 					other.m = 0
-				#print("inter ", self.m)
-		#if self.radius(other) < (-self.r + other.r) and self.interaction < 0:	
-		#	self.m = 0	
+				else:
+					other.m -= self.interaction*5
+					self.m += self.interaction*5
 		dx = other.x-self.x
 		if abs(dx) > width-abs(dx):
 			dx = dx-width
@@ -78,7 +77,7 @@ class Cell:
 				self.angle+=200*self.feel_pred/((r+1)*(r+1))
 
 		if self.interaction < 0:	
-			self.m -= 0.3*self.r * other.r/(2*r+1)
+			self.m -= 0.06*self.r * other.r/(2*r+1)
 			
 
 	def radius(self, other):
@@ -104,7 +103,7 @@ class Cell:
 
 	def get_mass(self):
 		if self.interaction<0:
-			self.m+=0.5*self.r+3
+			self.m+=0.09*(self.r+3)
 
 	def lose_mass(self):
-		self.m -= 0.5*(0.015*self.r+1 + abs(self.v*0.08))
+		self.m -= 0.08*(0.015*self.r+1 + abs(self.v*0.08))
