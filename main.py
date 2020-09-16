@@ -57,7 +57,7 @@ while 1:
 		COLOUR = GREEN
 		if cell.interaction > 0:
 			COLOUR = RED
-		pygame.draw.circle(sc, COLOUR, (int((cell.x + int(width/2)) * scale), int((cell.y + int(height1.5*/2)) * scale)), int(cell.r * scale))
+		pygame.draw.circle(sc, COLOUR, (int((cell.x + int(width/2)) * scale), int((cell.y + int(height/2)) * scale)), int(cell.r * scale))
 		pygame.draw.line(sc, GRAY,	[int((cell.x + int(width/2) - int(cell.m/2)) * scale), int((cell.y + int(height/2)) * scale)],
 									[int((cell.x + int(width/2) + int(cell.m/2)) * scale), int((cell.y + int(height/2)) * scale)], 2 )
 	if n_h == 0:
