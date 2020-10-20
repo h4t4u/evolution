@@ -1,15 +1,29 @@
 import cell
 import pygame 
 import sys
+from argparse import ArgumentParser
+
+parser = ArgumentParser()
+parser.add_argument("-W", "--width", dest="width", type=int, metavar="WIDTH", help="Set window width", default=4000)
+parser.add_argument("-H", "--height", dest="height", type=int, metavar="HEIGHT", help="Set window height", default=4000)
+parser.add_argument("-s", "--scale", dest="scale", type=float, metavar="S", help="Set viewport scale", default=0.25)
+parser.add_argument("-d", "--delay", dest="delay", type=int, metavar="dT", help="Set iteration delay", default=20)
+parser.add_argument("-q", "--quiet",
+                    action="store_false", dest="verbose", default=True,
+                    help="don't print status messages to stdout")
+
+args = parser.parse_args()
+
+width = args.width
+height = args.height
+scale = args.scale
+dT = args.delay
+verbose = args.verbose
 
 pygame.init()
 
-width = 4000
-height =4000
 cell.width = width
 cell.height = height
-scale = 0.25
-dT = 20
 sc = pygame.display.set_mode((int(width*scale), int(height*scale)))
 
 RED = (225, 0, 0)
@@ -64,8 +78,9 @@ while 1:
 		n_h = 1
 	if n_p == 0:
 		n_p = 1
-	print("herb: h", int(feel_h_h/n_h), "p", int(feel_h_p/n_h))
-	print("pred: h", int(feel_p_h/n_p), "p", int(feel_p_p/n_p))
+	if verbose:
+		print("herb: h", int(feel_h_h/n_h), "p", int(feel_h_p/n_h))
+		print("pred: h", int(feel_p_h/n_p), "p", int(feel_p_p/n_p))
 	pygame.display.update()
 	if len(cells) == 0:
 		break
